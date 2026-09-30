@@ -278,7 +278,7 @@ export function MedergencyApp({ onFinish, onLogin }: { onFinish?: (email?: strin
   };
 
   let content: ReactNode;
-  if (step === 0) content = <WelcomeScreen onNext={goNext} />;
+  if (step === 0) content = <WelcomeScreen onNext={goNext} onLogin={onLogin} />;
   else if (step === 1) content = <FormScreen title="Create Your Account" subtitle="Please provide your basic details." onNext={() => requireFields(["fullName", "mobile", "email", "password"])} canContinue={["fullName", "mobile", "email", "password"].every((key) => Boolean(form[key]))} submitted={submitted}>
     <Field label="Full Name" name="fullName" value={form["fullName"] || ""} onChange={update} placeholder="Enter your full name" icon={<UserRound size={17} />} error={missing("fullName")} />
     <Field label="Mobile Number" name="mobile" value={form["mobile"] || ""} onChange={update} placeholder="+91 98765 43210" type="tel" icon={<Phone size={17} />} error={missing("mobile")} />
