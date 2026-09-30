@@ -187,13 +187,13 @@ function UploadRow({ title, optional = false, file, onUpload }: { title: string;
   );
 }
 
-function WelcomeScreen({ onNext }: { onNext: () => void }) {
+function WelcomeScreen({ onNext, onLogin }: { onNext: () => void; onLogin?: (() => void) | undefined }) {
   return (
     <div className="welcome-screen">
       <BrandLogo />
       <div className="welcome-copy"><h1>Join Medergency<br />as a Doctor</h1><p>Be a part of a trusted healthcare platform and make a real impact.</p></div>
       <div className="portrait-glow"><img src={doctorPortrait} width={768} height={1024} alt="A professional female doctor" /></div>
-      <div className="welcome-actions"><PrimaryButton onClick={onNext}>Create Account</PrimaryButton><p>Already have an account? <button type="button" onClick={onNext}>Log In</button></p></div>
+      <div className="welcome-actions"><PrimaryButton onClick={onNext}>Create Account</PrimaryButton><p>Already have an account? <button type="button" onClick={onLogin ?? onNext}>Log In</button></p></div>
     </div>
   );
 }
@@ -249,7 +249,7 @@ function DashboardScreen() {
   );
 }
 
-export function MedergencyApp() {
+export function MedergencyApp({ onFinish, onLogin }: { onFinish?: (email?: string, password?: string) => void; onLogin?: () => void } = {}) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>({});
   const [submitted, setSubmitted] = useState(false);
@@ -339,7 +339,7 @@ export function MedergencyApp() {
     ].map((copy, index) => <label key={copy}><input type="checkbox" checked={declarations[index]} onChange={() => setDeclarations((items) => items.map((item, itemIndex) => itemIndex === index ? !item : item))} /><span><Check size={12} /></span><p>{copy}</p></label>)}</div>
   </FormScreen>;
   else if (step === 11) content = <VerificationScreen onNext={goNext} />;
-  else if (step === 12) content = <VerifiedScreen onNext={goNext} />;
+  else if (step === 12) content = <VerifiedScreen onNext={onFinish ? () => onFinish(form["email"], form["password"]) : goNext} />;
   else content = <DashboardScreen />;
 
   return (
