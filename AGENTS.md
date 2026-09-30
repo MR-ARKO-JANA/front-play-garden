@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep Medergency onboarding frontend-only with React state and mock responses, so a backend can be connected later without changing the interface.
