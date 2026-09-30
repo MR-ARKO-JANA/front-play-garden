@@ -172,7 +172,7 @@ function ChoiceChips({ values, selected, onChange, multiple = false }: { values:
   return <div className="chip-row">{values.map((value) => <button type="button" key={value} className={`choice-chip ${selected.includes(value) ? "selected" : ""}`} onClick={() => toggle(value)}>{value}</button>)}</div>;
 }
 
-function UploadRow({ title, optional = false, file, onUpload }: { title: string; optional?: boolean; file?: string; onUpload: (name: string) => void }) {
+function UploadRow({ title, optional = false, file, onUpload }: { title: string; optional?: boolean; file?: string | undefined; onUpload: (name: string) => void }) {
   const ref = useRef<HTMLInputElement>(null);
   return (
     <div className="upload-row">
@@ -280,10 +280,10 @@ export function MedergencyApp() {
   let content: ReactNode;
   if (step === 0) content = <WelcomeScreen onNext={goNext} />;
   else if (step === 1) content = <FormScreen title="Create Your Account" subtitle="Please provide your basic details." onNext={() => requireFields(["fullName", "mobile", "email", "password"])} canContinue={["fullName", "mobile", "email", "password"].every((key) => Boolean(form[key]))} submitted={submitted}>
-    <Field label="Full Name" name="fullName" value={form.fullName || ""} onChange={update} placeholder="Enter your full name" icon={<UserRound size={17} />} error={missing("fullName")} />
-    <Field label="Mobile Number" name="mobile" value={form.mobile || ""} onChange={update} placeholder="+91 98765 43210" type="tel" icon={<Phone size={17} />} error={missing("mobile")} />
-    <Field label="Email Address" name="email" value={form.email || ""} onChange={update} placeholder="you@domain.com" type="email" icon={<Mail size={17} />} error={missing("email")} />
-    <Field label="Create Password" name="password" value={form.password || ""} onChange={update} placeholder="Min. 8 characters" type={showPassword ? "text" : "password"} icon={<LockKeyhole size={17} />} error={missing("password")} right={<button type="button" className="field-action" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Hide password" : "Show password"}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button>} />
+    <Field label="Full Name" name="fullName" value={form["fullName"] || ""} onChange={update} placeholder="Enter your full name" icon={<UserRound size={17} />} error={missing("fullName")} />
+    <Field label="Mobile Number" name="mobile" value={form["mobile"] || ""} onChange={update} placeholder="+91 98765 43210" type="tel" icon={<Phone size={17} />} error={missing("mobile")} />
+    <Field label="Email Address" name="email" value={form["email"] || ""} onChange={update} placeholder="you@domain.com" type="email" icon={<Mail size={17} />} error={missing("email")} />
+    <Field label="Create Password" name="password" value={form["password"] || ""} onChange={update} placeholder="Min. 8 characters" type={showPassword ? "text" : "password"} icon={<LockKeyhole size={17} />} error={missing("password")} right={<button type="button" className="field-action" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Hide password" : "Show password"}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button>} />
     <p className="legal-copy">By creating an account, you agree to our <b>Terms & Conditions</b> and <b>Privacy Policy</b>.</p>
   </FormScreen>;
   else if (step === 2) content = <FormScreen title="Verify Your Mobile Number" subtitle="We have sent a 6-digit OTP to +91 98765 43210." action="Verify" onNext={() => requireFields(["otp0", "otp1", "otp2", "otp3", "otp4", "otp5"])} canContinue={[0,1,2,3,4,5].every((i) => Boolean(form[`otp${i}`]))} submitted={submitted}>
@@ -291,45 +291,45 @@ export function MedergencyApp() {
     <button type="button" className="resend-button">Resend OTP <span>(00:45)</span></button>
   </FormScreen>;
   else if (step === 3) content = <FormScreen title="Personal Information" subtitle="Tell us about yourself." onNext={() => requireFields(["dob", "address", "city"], gender.length > 0)} submitted={submitted}>
-    <Field label="Date of Birth" name="dob" value={form.dob || ""} onChange={update} type="date" icon={<CalendarDays size={17} />} error={missing("dob")} />
+    <Field label="Date of Birth" name="dob" value={form["dob"] || ""} onChange={update} type="date" icon={<CalendarDays size={17} />} error={missing("dob")} />
     <div className="field-label"><span>Gender</span><ChoiceChips values={["Male", "Female", "Other"]} selected={gender} onChange={setGender} />{submitted && gender.length === 0 && <small className="error-copy">Please make a selection</small>}</div>
-    <Field label="Current Address" name="address" value={form.address || ""} onChange={update} placeholder="Enter your address" icon={<MapPin size={17} />} error={missing("address")} />
-    <SelectField label="City" name="city" value={form.city || ""} onChange={update} options={["Kolkata", "Mumbai", "New Delhi", "Bengaluru", "Chennai"]} error={missing("city")} />
+    <Field label="Current Address" name="address" value={form["address"] || ""} onChange={update} placeholder="Enter your address" icon={<MapPin size={17} />} error={missing("address")} />
+    <SelectField label="City" name="city" value={form["city"] || ""} onChange={update} options={["Kolkata", "Mumbai", "New Delhi", "Bengaluru", "Chennai"]} error={missing("city")} />
   </FormScreen>;
   else if (step === 4) content = <FormScreen title="Medical Registration" subtitle="Enter registration details as per your Medical Council." onNext={() => requireFields(["council", "registration", "state", "registrationDate"])} submitted={submitted}>
-    <SelectField label="Medical Council / Authority" name="council" value={form.council || ""} onChange={update} options={["National Medical Commission", "West Bengal Medical Council", "Maharashtra Medical Council"]} error={missing("council")} />
-    <Field label="Registration Number" name="registration" value={form.registration || ""} onChange={update} placeholder="Enter registration number" icon={<FileBadge2 size={17} />} error={missing("registration")} />
-    <SelectField label="Registration State" name="state" value={form.state || ""} onChange={update} options={["West Bengal", "Maharashtra", "Delhi", "Karnataka"]} error={missing("state")} />
-    <Field label="Registration Date" name="registrationDate" value={form.registrationDate || ""} onChange={update} type="date" icon={<CalendarDays size={17} />} error={missing("registrationDate")} />
+    <SelectField label="Medical Council / Authority" name="council" value={form["council"] || ""} onChange={update} options={["National Medical Commission", "West Bengal Medical Council", "Maharashtra Medical Council"]} error={missing("council")} />
+    <Field label="Registration Number" name="registration" value={form["registration"] || ""} onChange={update} placeholder="Enter registration number" icon={<FileBadge2 size={17} />} error={missing("registration")} />
+    <SelectField label="Registration State" name="state" value={form["state"] || ""} onChange={update} options={["West Bengal", "Maharashtra", "Delhi", "Karnataka"]} error={missing("state")} />
+    <Field label="Registration Date" name="registrationDate" value={form["registration"]Date || ""} onChange={update} type="date" icon={<CalendarDays size={17} />} error={missing("registrationDate")} />
   </FormScreen>;
-  else if (step === 5) content = <FormScreen title="Education & Qualification" subtitle="Add your medical qualifications." onNext={() => requireFields(["qualification", "college", "year"], Boolean(files.degree))} submitted={submitted}>
-    <SelectField label="Primary Qualification" name="qualification" value={form.qualification || ""} onChange={update} options={["MBBS", "BDS", "BAMS", "BHMS"]} error={missing("qualification")} />
-    <Field label="Medical College" name="college" value={form.college || ""} onChange={update} placeholder="Enter medical college" error={missing("college")} />
-    <Field label="Year of Completion" name="year" value={form.year || ""} onChange={update} type="number" placeholder="2018" error={missing("year")} />
-    <UploadRow title="Degree Certificate" file={files.degree} onUpload={(name) => setFile("degree", name)} />
-    <SelectField label="Post Graduate Qualification (Optional)" name="postgrad" value={form.postgrad || ""} onChange={update} options={["MD", "MS", "DNB", "Diploma"]} />
+  else if (step === 5) content = <FormScreen title="Education & Qualification" subtitle="Add your medical qualifications." onNext={() => requireFields(["qualification", "college", "year"], Boolean(files["degree"]))} submitted={submitted}>
+    <SelectField label="Primary Qualification" name="qualification" value={form["qualification"] || ""} onChange={update} options={["MBBS", "BDS", "BAMS", "BHMS"]} error={missing("qualification")} />
+    <Field label="Medical College" name="college" value={form["college"] || ""} onChange={update} placeholder="Enter medical college" error={missing("college")} />
+    <Field label="Year of Completion" name="year" value={form["year"] || ""} onChange={update} type="number" placeholder="2018" error={missing("year")} />
+    <UploadRow title="Degree Certificate" file={files["degree"]} onUpload={(name) => setFile("degree", name)} />
+    <SelectField label="Post Graduate Qualification (Optional)" name="postgrad" value={form["postgrad"] || ""} onChange={update} options={["MD", "MS", "DNB", "Diploma"]} />
   </FormScreen>;
   else if (step === 6) content = <FormScreen title="Specialization" subtitle="Select your area of expertise." onNext={() => requireFields(["specialization", "experience"], languages.length > 0)} submitted={submitted}>
-    <SelectField label="Specialization" name="specialization" value={form.specialization || ""} onChange={update} options={["General Medicine", "Cardiology", "Dermatology", "Pediatrics"]} error={missing("specialization")} />
-    <SelectField label="Years of Experience" name="experience" value={form.experience || ""} onChange={update} options={["0–2 Years", "3–5 Years", "6–10 Years", "10+ Years"]} error={missing("experience")} />
+    <SelectField label="Specialization" name="specialization" value={form["specialization"] || ""} onChange={update} options={["General Medicine", "Cardiology", "Dermatology", "Pediatrics"]} error={missing("specialization")} />
+    <SelectField label="Years of Experience" name="experience" value={form["experience"] || ""} onChange={update} options={["0–2 Years", "3–5 Years", "6–10 Years", "10+ Years"]} error={missing("experience")} />
     <div className="field-label"><span>Languages Spoken</span><ChoiceChips values={["English", "Hindi", "Bengali", "+ Add"]} selected={languages} onChange={setLanguages} multiple /></div>
   </FormScreen>;
-  else if (step === 7) content = <FormScreen title="Identity Verification" subtitle="Upload your government ID proof." onNext={() => { setSubmitted(true); if (files.identity) goNext(); }} submitted={submitted}>
+  else if (step === 7) content = <FormScreen title="Identity Verification" subtitle="Upload your government ID proof." onNext={() => { setSubmitted(true); if (files["identity"]) goNext(); }} submitted={submitted}>
     <div className="document-options">{["Aadhaar Card", "PAN Card", "Passport"].map((item) => <button type="button" key={item} className={identity === item ? "selected" : ""} onClick={() => setIdentity(item)}><FileText size={18} /><span>{item}</span><i>{identity === item && <Check size={12} />}</i></button>)}</div>
-    <label className="drop-zone"><Upload size={24} /><strong>Tap to upload or drag and drop</strong><small>JPG, PNG, PDF · Max 5 MB</small><input type="file" accept="image/*,.pdf" onChange={(event) => { const file = event.target.files?.[0]; if (file) setFile("identity", file.name); }} />{files.identity && <em><Check size={13} /> {files.identity}</em>}</label>
+    <label className="drop-zone"><Upload size={24} /><strong>Tap to upload or drag and drop</strong><small>JPG, PNG, PDF · Max 5 MB</small><input type="file" accept="image/*,.pdf" onChange={(event) => { const file = event.target.files?.[0]; if (file) setFile("identity", file.name); }} />{files["identity"] && <em><Check size={13} /> {files["identity"]}</em>}</label>
   </FormScreen>;
   else if (step === 8) content = <FormScreen title="Document Upload" subtitle="Upload the following documents." onNext={() => { setSubmitted(true); if (["registrationDoc", "mbbs", "photo", "signature"].every((key) => files[key])) goNext(); }} submitted={submitted}>
-    <UploadRow title="Medical Registration Certificate" file={files.registrationDoc} onUpload={(name) => setFile("registrationDoc", name)} />
-    <UploadRow title="MBBS Degree Certificate" file={files.mbbs} onUpload={(name) => setFile("mbbs", name)} />
-    <UploadRow title="PG Degree Certificate" optional file={files.pg} onUpload={(name) => setFile("pg", name)} />
-    <UploadRow title="Professional Photo" file={files.photo} onUpload={(name) => setFile("photo", name)} />
-    <UploadRow title="Signature Sample" file={files.signature} onUpload={(name) => setFile("signature", name)} />
+    <UploadRow title="Medical Registration Certificate" file={files["registrationDoc"]} onUpload={(name) => setFile("registrationDoc", name)} />
+    <UploadRow title="MBBS Degree Certificate" file={files["mbbs"]} onUpload={(name) => setFile("mbbs", name)} />
+    <UploadRow title="PG Degree Certificate" optional file={files["pg"]} onUpload={(name) => setFile("pg", name)} />
+    <UploadRow title="Professional Photo" file={files["photo"]} onUpload={(name) => setFile("photo", name)} />
+    <UploadRow title="Signature Sample" file={files["signature"]} onUpload={(name) => setFile("signature", name)} />
   </FormScreen>;
   else if (step === 9) content = <FormScreen title="Professional Profile" subtitle="Complete your professional profile." onNext={() => requireFields(["hospital", "professionalAddress", "availability"])} submitted={submitted}>
-    <Field label="Hospital / Clinic Affiliation" name="hospital" value={form.hospital || ""} onChange={update} placeholder="Apollo Hospital" error={missing("hospital")} />
-    <Field label="Professional Address" name="professionalAddress" value={form.professionalAddress || ""} onChange={update} placeholder="Kolkata, West Bengal" icon={<MapPin size={17} />} error={missing("professionalAddress")} />
+    <Field label="Hospital / Clinic Affiliation" name="hospital" value={form["hospital"] || ""} onChange={update} placeholder="Apollo Hospital" error={missing("hospital")} />
+    <Field label="Professional Address" name="professionalAddress" value={form["professionalAddress"] || ""} onChange={update} placeholder="Kolkata, West Bengal" icon={<MapPin size={17} />} error={missing("professionalAddress")} />
     <div className="field-label"><span>Consultation Languages</span><ChoiceChips values={["English", "Hindi", "Bengali"]} selected={languages} onChange={setLanguages} multiple /></div>
-    <SelectField label="Availability" name="availability" value={form.availability || ""} onChange={update} options={["Mon–Fri, 10:00 AM – 6:00 PM", "Weekends, 9:00 AM – 1:00 PM", "Custom schedule"]} error={missing("availability")} />
+    <SelectField label="Availability" name="availability" value={form["availability"] || ""} onChange={update} options={["Mon–Fri, 10:00 AM – 6:00 PM", "Weekends, 9:00 AM – 1:00 PM", "Custom schedule"]} error={missing("availability")} />
   </FormScreen>;
   else if (step === 10) content = <FormScreen title="Declaration" subtitle="I confirm that:" action="Submit" onNext={() => { setSubmitted(true); if (declarations.every(Boolean)) goNext(); }} canContinue={declarations.every(Boolean)} submitted={submitted}>
     <div className="declaration-list">{[
