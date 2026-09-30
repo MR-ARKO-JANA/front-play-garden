@@ -300,7 +300,7 @@ export function MedergencyApp() {
     <SelectField label="Medical Council / Authority" name="council" value={form["council"] || ""} onChange={update} options={["National Medical Commission", "West Bengal Medical Council", "Maharashtra Medical Council"]} error={missing("council")} />
     <Field label="Registration Number" name="registration" value={form["registration"] || ""} onChange={update} placeholder="Enter registration number" icon={<FileBadge2 size={17} />} error={missing("registration")} />
     <SelectField label="Registration State" name="state" value={form["state"] || ""} onChange={update} options={["West Bengal", "Maharashtra", "Delhi", "Karnataka"]} error={missing("state")} />
-    <Field label="Registration Date" name="registrationDate" value={form["registration"]Date || ""} onChange={update} type="date" icon={<CalendarDays size={17} />} error={missing("registrationDate")} />
+    <Field label="Registration Date" name="registrationDate" value={form["registrationDate"] || ""} onChange={update} type="date" icon={<CalendarDays size={17} />} error={missing("registrationDate")} />
   </FormScreen>;
   else if (step === 5) content = <FormScreen title="Education & Qualification" subtitle="Add your medical qualifications." onNext={() => requireFields(["qualification", "college", "year"], Boolean(files["degree"]))} submitted={submitted}>
     <SelectField label="Primary Qualification" name="qualification" value={form["qualification"] || ""} onChange={update} options={["MBBS", "BDS", "BAMS", "BHMS"]} error={missing("qualification")} />
