@@ -1,26 +1,41 @@
-# Pure Frontend
+# Medergency Frontend
 
-create only frontend
+Medergency is an emergency and online consultation platform connecting patients with verified healthcare specialists.
 
-This project was built with [Lovable](https://lovable.dev).
+## Tech Stack
 
-**Live app**: https://front-play-garden.lovable.app
+- **React 19**
+- **TanStack Router & Start**
+- **Tailwind CSS v4**
+- **Vite**
+- **TypeScript**
 
-## Build with Lovable
+## Getting Started
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/e23a5551-5802-490c-95dd-0688702ba9c2).
+### Prerequisites
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Node.js (v20+ recommended) and npm.
 
-## Development
+### Installation
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+```bash
+npm install
+```
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+### Development
+
+Run the development server:
+
+```bash
 npm run dev
+```
+
+The application will be accessible at `http://localhost:3000`.
+
+### Build
+
+To create a production build:
+
+```bash
+npm run build
 ```

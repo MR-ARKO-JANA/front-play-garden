@@ -1,13 +1,4 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Project Guidelines
 
 - Keep Medergency onboarding frontend-only with React state and mock responses, so a backend can be connected later without changing the interface.
 - Patient/doctor portals use a mock store (src/lib/medergency/store.tsx) as the single service layer; swap its actions for API calls later without changing pages.

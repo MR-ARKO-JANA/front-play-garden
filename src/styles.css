@@ -356,3 +356,13 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
 }
+
+/* Overlay badge suppression */
+[class*="lovable"],
+[id*="lovable"],
+div:has(> a[href*="lovable.dev"]),
+a[href*="lovable.dev"],
+button:has(svg) + div[class*="lovable"] {
+  display: none !important;
+}
+

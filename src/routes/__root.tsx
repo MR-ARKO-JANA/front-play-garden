@@ -10,7 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { reportAppError } from "../lib/error-reporting";
 import { MedergencyProvider } from "../lib/medergency/store";
 import { Toaster } from "../components/ui/sonner";
 
@@ -40,7 +40,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    reportAppError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
 
   return (
@@ -119,6 +119,25 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    const removeBadge = () => {
+      const candidates = document.querySelectorAll(
+        '[class*="lovable"], [id*="lovable"], a[href*="lovable.dev"]'
+      );
+      candidates.forEach((el) => {
+        // Find top floating container if nested
+        const parent = el.closest('div[style*="fixed"], div[class*="fixed"], div[style*="z-index"]') || el;
+        parent.remove();
+      });
+    };
+
+    removeBadge();
+    const observer = new MutationObserver(() => removeBadge());
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <MedergencyProvider>
@@ -129,3 +148,4 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
