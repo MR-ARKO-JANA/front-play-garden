@@ -36,7 +36,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -93,7 +93,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -122,11 +125,12 @@ function RootComponent() {
   useEffect(() => {
     const removeBadge = () => {
       const candidates = document.querySelectorAll(
-        '[class*="lovable"], [id*="lovable"], a[href*="lovable.dev"]'
+        '[class*="lovable"], [id*="lovable"], a[href*="lovable.dev"]',
       );
       candidates.forEach((el) => {
         // Find top floating container if nested
-        const parent = el.closest('div[style*="fixed"], div[class*="fixed"], div[style*="z-index"]') || el;
+        const parent =
+          el.closest('div[style*="fixed"], div[class*="fixed"], div[style*="z-index"]') || el;
         parent.remove();
       });
     };
@@ -148,4 +152,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

@@ -6,7 +6,9 @@ export const Route = createFileRoute("/patient")({
   ssr: false,
   component: () => (
     <RequireRole role="patient">
-      <PatientShell><Outlet /></PatientShell>
+      <PatientShell>
+        <Outlet />
+      </PatientShell>
     </RequireRole>
   ),
 });

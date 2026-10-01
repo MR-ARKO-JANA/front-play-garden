@@ -1,7 +1,11 @@
 // Core entities. Shapes are designed to map 1:1 onto future API responses.
 export type Role = "patient" | "doctor";
 
-export interface Session { role: Role; userId: string; remember: boolean }
+export interface Session {
+  role: Role;
+  userId: string;
+  remember: boolean;
+}
 
 export interface PatientProfile {
   id: string;
@@ -59,7 +63,8 @@ export interface Appointment {
   summary?: string | undefined;
 }
 
-export type RecordCategory = "Prescriptions" | "Lab Reports" | "Medical History" | "Other Documents";
+export type RecordCategory =
+  "Prescriptions" | "Lab Reports" | "Medical History" | "Other Documents";
 
 export interface MedicalRecord {
   id: string;
