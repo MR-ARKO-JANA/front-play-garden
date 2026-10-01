@@ -9,9 +9,9 @@ export interface PatientProfile {
   email: string;
   mobile: string;
   password: string; // mock only — never store plain passwords with a real backend
-  gender?: string;
-  dob?: string;
-  address?: string;
+  gender?: string | undefined;
+  dob?: string | undefined;
+  address?: string | undefined;
 }
 
 export type VerificationStatus = "approved" | "pending" | "rejected";
@@ -48,15 +48,15 @@ export interface Appointment {
   date: string; // YYYY-MM-DD
   time: string; // "10:00 AM"
   reason: string;
-  symptoms?: string;
-  history?: string;
+  symptoms?: string | undefined;
+  history?: string | undefined;
   reports: string[];
   status: AppointmentStatus;
   payment: PaymentStatus;
-  paymentMethod?: string;
+  paymentMethod?: string | undefined;
   type: "Video Consultation";
   createdAt: string;
-  summary?: string;
+  summary?: string | undefined;
 }
 
 export type RecordCategory = "Prescriptions" | "Lab Reports" | "Medical History" | "Other Documents";
